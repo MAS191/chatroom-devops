@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chat-config
+  namespace: dev
+data:
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  CACHE_LIMIT: "50"

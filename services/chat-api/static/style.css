@@ -1,0 +1,11 @@
+body { font-family: Arial, sans-serif; background: #f6f7fb; }
+.wrap { max-width: 900px; margin: 40px auto; padding: 0 16px; }
+.card { background: white; padding: 16px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.row { display: flex; gap: 8px; }
+input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 10px; }
+button { padding: 10px 14px; border: 0; border-radius: 10px; cursor: pointer; }
+.messages { height: 420px; overflow: auto; border: 1px solid #eee; border-radius: 10px; padding: 10px; background: #fff; margin: 10px 0; }
+.msg { padding: 8px; border-bottom: 1px solid #f0f0f0; }
+.time { color: #777; font-size: 12px; margin-left: 10px; }
+.muted { color: #666; font-size: 13px; }
+.hidden { display: none; }

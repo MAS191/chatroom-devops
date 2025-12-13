@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build chat-api image
+        run: |
+          docker build -t chat-api:ci services/chat-api
+
+      - name: Smoke test (run containers + hit /health)
+        run: |
+          docker network create testnet
+
+          docker run -d --name redis --network testnet redis:7-alpine
+          docker run -d --name mongo --network testnet mongo:7
+
+          docker run -d --name chat-api --network testnet -p 5000:5000 \
+            -e REDIS_HOST=redis -e REDIS_PORT=6379 \
+            -e MONGO_URI=mongodb://mongo:27017/chatdb \
+            -e FLASK_SECRET=testsecret \
+            chat-api:ci
+
+          sleep 10
+          curl -f http://localhost:5000/health
+
+      - name: Debug logs (only if failed)
+        if: failure()
+        run: |
+          docker ps -a
+          docker logs chat-api || true
+          docker logs mongo || true
+          docker logs redis || true

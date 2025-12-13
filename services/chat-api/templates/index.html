@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ChatRoom</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <h2>ChatRoom</h2>
+
+    <div id="joinBox" class="card">
+      <div class="row">
+        <input id="nickname" placeholder="Nickname (e.g., Ali)" />
+        <input id="room" placeholder="Room (default: global)" />
+        <button id="joinBtn">Join</button>
+      </div>
+      <div id="joinStatus" class="muted"></div>
+    </div>
+
+    <div id="chatBox" class="card hidden">
+      <div class="muted" id="whoami"></div>
+
+      <div id="messages" class="messages"></div>
+
+      <div class="row">
+        <input id="text" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+      </div>
+      <div class="muted">Auto-refresh every 2 seconds</div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
