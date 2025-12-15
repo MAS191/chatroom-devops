@@ -64,9 +64,18 @@ function renderMessages(list) {
   messagesDiv.innerHTML = "";
   for (const m of list) {
     const div = document.createElement("div");
-    div.className = "msg";
-    div.innerHTML = `<b>${escapeHtml(m.nickname)}</b>: ${escapeHtml(m.text)}
-      <span class="time">${new Date(m.created_at).toLocaleString()}</span>`;
+    const isMe = m.nickname === nickname;
+    div.className = "msg " + (isMe ? "msg-me" : "msg-other");
+    
+    div.innerHTML = `
+      <div class="bubble">
+        <div class="meta">
+          <span class="user">${escapeHtml(m.nickname)}</span>
+          <span class="time">${new Date(m.created_at).toLocaleTimeString()}</span>
+        </div>
+        <div class="content">${escapeHtml(m.text)}</div>
+      </div>
+    `;
     messagesDiv.appendChild(div);
   }
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
