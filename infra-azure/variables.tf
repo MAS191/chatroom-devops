@@ -1,6 +1,6 @@
 variable "location" {
   type    = string
-  default = "eastus"
+  default = "southeastasia"
 }
 
 variable "resource_group_name" {
@@ -26,4 +26,10 @@ variable "ssh_public_key_path" {
 variable "allowed_ssh_cidr" {
   type        = string
   description = "Your public IP CIDR for SSH, e.g. 1.2.3.4/32"
+}
+
+variable "acr_name" {
+  type        = string
+  default     = "acrchatroom9283"
+  description = "Name of the Azure Container Registry. Must be globally unique."
 }

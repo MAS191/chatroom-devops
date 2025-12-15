@@ -43,9 +43,10 @@ metadata:
   name: chat-api
   namespace: dev
 spec:
+  type: LoadBalancer
   selector:
     app: chat-api
   ports:
     - port: 80
       targetPort: 5000
-  type: ClusterIP
+  type: LoadBalancer

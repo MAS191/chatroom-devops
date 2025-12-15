@@ -10,6 +10,7 @@ terraform {
 
 provider "azurerm" {
   features {}
+  subscription_id = "2ccc9519-0dd6-4a38-9be5-1c374bdf5171"
 }
 
 resource "azurerm_resource_group" "rg" {
@@ -48,7 +49,6 @@ resource "azurerm_network_security_group" "nsg" {
     destination_address_prefix = "*"
   }
 
-  # Optional: NodePort range for demo access (Minikube)
   security_rule {
     name                       = "AllowNodePortRange"
     priority                   = 110
@@ -86,14 +86,26 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_network_interface_security_group_association" "nsg_assoc" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.nsg.id
+
+  # Helps avoid occasional provider "inconsistent result" issues on this association
+  lifecycle {
+    ignore_changes = [
+      network_interface_id,
+      network_security_group_id
+    ]
+  }
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B2s"
-  admin_username      = var.admin_username
+
+  # CHANGED (was Standard_B2s)
+  size = "Standard_B2s_v2"
+  zone = "1"
+  admin_username = var.admin_username
+
   network_interface_ids = [
     azurerm_network_interface.nic.id
   ]

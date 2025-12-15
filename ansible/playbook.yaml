@@ -1,0 +1,49 @@
+---
+- name: Deploy Chatroom App to Kubernetes
+  hosts: local
+  gather_facts: false
+  vars:
+    k8s_namespace: dev
+    k8s_dir: "../k8s"
+    monitoring_dir: "../monitoring"
+
+  tasks:
+    - name: Ensure namespace exists
+      kubernetes.core.k8s:
+        name: "{{ k8s_namespace }}"
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Apply Kubernetes Manifests (App & DB)
+      kubernetes.core.k8s:
+        state: present
+        namespace: "{{ k8s_namespace }}"
+        src: "{{ item }}"
+      loop:
+        - "{{ k8s_dir }}/secret.yaml"
+        - "{{ k8s_dir }}/configmap.yaml"
+        - "{{ k8s_dir }}/mongo.yaml"
+        - "{{ k8s_dir }}/redis.yaml"
+        - "{{ k8s_dir }}/chat-api.yaml"
+
+    - name: Apply Monitoring Manifests (Prometheus & Grafana)
+      kubernetes.core.k8s:
+        state: present
+        namespace: "{{ k8s_namespace }}"
+        src: "{{ item }}"
+      loop:
+        - "{{ monitoring_dir }}/namespace.yaml"
+        - "{{ monitoring_dir }}/prometheus.yaml"
+        - "{{ monitoring_dir }}/grafana.yaml"
+
+    - name: Verify Chat API Deployment
+      kubernetes.core.k8s_info:
+        kind: Deployment
+        namespace: "{{ k8s_namespace }}"
+        name: chat-api
+      register: chat_api_status
+
+    - name: Display Deployment Status
+      debug:
+        msg: "Chat API Replicas: {{ chat_api_status.resources[0].status.readyReplicas | default(0) }}/{{ chat_api_status.resources[0].spec.replicas }}"
