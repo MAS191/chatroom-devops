@@ -125,28 +125,3 @@ Throughout this project, we encountered and solved several challenges:
 *   **IaC Drift:** Using Terraform taught us the importance of the state file. We learned to never manually modify Azure resources, as Terraform would overwrite them on the next run.
 
 ---
-
-## 6. 📸 Screenshots & Evidence
-
-### Step 2: Infrastructure (Terraform)
-**Terraform Output:**
-![Terraform Output](screenshots/terraform_output.png)
-
-**Terraform Destroy Plan:**
-![Terraform Destroy](screenshots/terraform_destroy.png)
-
-### Step 4: Configuration Management (Ansible)
-**Ansible Playbook Run:**
-![Ansible Run](screenshots/ansible_run.png)
-
-### Step 5: Kubernetes Deployment
-**Pods & Services Status:**
-![Kubernetes Status](screenshots/k8s_deployment.png)
-
-### Step 6: CI/CD Pipeline
-**GitHub Actions Success:**
-![CI/CD Pipeline](screenshots/pipeline_success.png)
-
-### Step 7: Monitoring
-**Grafana Dashboard:**
-![Grafana Dashboard](screenshots/grafana_dashboard.png)
